@@ -101,7 +101,7 @@ class SmsMethodCallHandler(
             && call.hasArgument(ADDRESS)) {
           val messageBody = call.argument<String>(MESSAGE_BODY)
           val address = call.argument<String>(ADDRESS)
-          val subId = call.argument<Int>(SUBSCRIPTION_ID)
+          val subId: Int = call.argument<Int>(SUBSCRIPTION_ID)
           if (messageBody.isNullOrBlank() || address.isNullOrBlank()) {
             result.error(ILLEGAL_ARGUMENT, Constants.MESSAGE_OR_ADDRESS_CANNOT_BE_NULL, null)
             return

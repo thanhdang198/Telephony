@@ -62,10 +62,6 @@ class SmsController(private val context: Context) {
     // SEND SMS
     fun sendSms(destinationAddress: String, messageBody: String, listenStatus: Boolean, subId: Int) {
         val smsManager = getSmsManager(subId)
-        var subscriptionId: String? = subId.toString()
-        if(subId == -1){
-            subscriptionId = null
-        }
         if (listenStatus) {
             val pendingIntents = getPendingIntents()
             smsManager.sendTextMessage(
@@ -82,22 +78,18 @@ class SmsController(private val context: Context) {
 
     fun sendMultipartSms(destinationAddress: String, messageBody: String, listenStatus: Boolean, subId: Int) {
         val smsManager = getSmsManager(subId)
-        var subscriptionId: String? = subId.toString()
-        if(subId == -1){
-            subscriptionId = null
-        }
         val messageParts = smsManager.divideMessage(messageBody)
         if (listenStatus) {
             val pendingIntents = getMultiplePendingIntents(messageParts.size)
             smsManager.sendMultipartTextMessage(
                 destinationAddress,
-                subscriptionId,
+                null,
                 messageParts,
                 pendingIntents.first,
                 pendingIntents.second
             )
         } else {
-            smsManager.sendMultipartTextMessage(destinationAddress, subscriptionId, messageParts, null, null)
+            smsManager.sendMultipartTextMessage(destinationAddress, null, messageParts, null, null)
         }
     }
 
@@ -150,7 +142,7 @@ class SmsController(private val context: Context) {
     private fun getSmsManager(subId: Int): SmsManager {
         var subscriptionId = subId
         if(subId == -1){
-subscriptionId = SmsManager.getDefaultSmsSubscriptionId()
+            subscriptionId = SmsManager.getDefaultSmsSubscriptionId()
         }
 
         val smsManager = getSystemService(context, SmsManager::class.java)

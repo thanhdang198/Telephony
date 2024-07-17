@@ -67,7 +67,7 @@ class SmsMethodCallHandler(
 
   private lateinit var messageBody: String
   private lateinit var address: String
-  private lateinit var subId: Int = -1
+  private var var subId: Int = -1
   private var listenStatus: Boolean = false
 
   private var setupHandle: Long = -1

@@ -62,7 +62,7 @@ class SmsController(private val context: Context) {
     // SEND SMS
     fun sendSms(destinationAddress: String, messageBody: String, listenStatus: Boolean, subId: Int) {
         val smsManager = getSmsManager(subId)
-        var subscriptionId = subId.toInt()
+        var subscriptionId: String? = subId.toString()
         if(subId == -1){
             subscriptionId = null
         }
@@ -82,7 +82,7 @@ class SmsController(private val context: Context) {
 
     fun sendMultipartSms(destinationAddress: String, messageBody: String, listenStatus: Boolean, subId: Int) {
         val smsManager = getSmsManager(subId)
-        var subscriptionId = subId.toInt()
+        var subscriptionId: String? = subId.toString()
         if(subId == -1){
             subscriptionId = null
         }

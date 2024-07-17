@@ -70,13 +70,13 @@ class SmsController(private val context: Context) {
             val pendingIntents = getPendingIntents()
             smsManager.sendTextMessage(
                 destinationAddress,
-                subscriptionId,
+                null,
                 messageBody,
                 pendingIntents.first,
                 pendingIntents.second
             )
         } else {
-            smsManager.sendTextMessage(destinationAddress, subscriptionId, messageBody, null, null)
+            smsManager.sendTextMessage(destinationAddress, null, messageBody, null, null)
         }
     }
 

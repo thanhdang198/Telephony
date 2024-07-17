@@ -109,7 +109,9 @@ class SmsMethodCallHandler(
 
           this.messageBody = messageBody
           this.address = address
-          this.subId = subId?.toInt()
+          if(subId != null){
+            this.subId = subId
+          }
 
           listenStatus = call.argument(LISTEN_STATUS) ?: false
         }

@@ -60,36 +60,44 @@ class SmsController(private val context: Context) {
     }
 
     // SEND SMS
-    fun sendSms(destinationAddress: String, messageBody: String, listenStatus: Boolean) {
-        val smsManager = getSmsManager()
+    fun sendSms(destinationAddress: String, messageBody: String, listenStatus: Boolean, subId: Int) {
+        val smsManager = getSmsManager(subId)
+        val subscriptionId = subId
+        if(subId == -1){
+            subscriptionId = null
+        }
         if (listenStatus) {
             val pendingIntents = getPendingIntents()
             smsManager.sendTextMessage(
                 destinationAddress,
-                null,
+                subscriptionId,
                 messageBody,
                 pendingIntents.first,
                 pendingIntents.second
             )
         } else {
-            smsManager.sendTextMessage(destinationAddress, null, messageBody, null, null)
+            smsManager.sendTextMessage(destinationAddress, subscriptionId, messageBody, null, null)
         }
     }
 
-    fun sendMultipartSms(destinationAddress: String, messageBody: String, listenStatus: Boolean) {
-        val smsManager = getSmsManager()
+    fun sendMultipartSms(destinationAddress: String, messageBody: String, listenStatus: Boolean, subId: Int) {
+        val smsManager = getSmsManager(subId)
+        val subscriptionId = subId
+        if(subId == -1){
+            subscriptionId = null
+        }
         val messageParts = smsManager.divideMessage(messageBody)
         if (listenStatus) {
             val pendingIntents = getMultiplePendingIntents(messageParts.size)
             smsManager.sendMultipartTextMessage(
                 destinationAddress,
-                null,
+                subscriptionId,
                 messageParts,
                 pendingIntents.first,
                 pendingIntents.second
             )
         } else {
-            smsManager.sendMultipartTextMessage(destinationAddress, null, messageParts, null, null)
+            smsManager.sendMultipartTextMessage(destinationAddress, subscriptionId, messageParts, null, null)
         }
     }
 
@@ -139,8 +147,12 @@ class SmsController(private val context: Context) {
         return Pair(sentPendingIntent, deliveredPendingIntent)
     }
 
-    private fun getSmsManager(): SmsManager {
-        val subscriptionId = SmsManager.getDefaultSmsSubscriptionId()
+    private fun getSmsManager(subId: Int): SmsManager {
+        val subscriptionId = subId
+        if(subId == -1){
+subscriptionId = SmsManager.getDefaultSmsSubscriptionId()
+        }
+
         val smsManager = getSystemService(context, SmsManager::class.java)
             ?: throw RuntimeException("Flutter Telephony: Error getting SmsManager")
         if (subscriptionId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {

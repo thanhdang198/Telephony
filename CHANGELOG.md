@@ -1,3 +1,7 @@
+## 0.2.4
+* Remove unnecessary log
+* Upgrade build gradle to `7.1.3`
+* Upgrade kotlin version to `1.9.22`
 ## 0.2.3
 * Update dev library version
 ## 0.2.2

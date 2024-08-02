@@ -6,6 +6,11 @@
 
 |:exclamation: This plugin currently only works on Android Platform|
 |------------------------------------------------------------------|
+|Contribute or meet a problem|
+|Please create pull-request/issue in the [original package](https://github.com/shounakmulay/Telephony), i will check and fix it as soon as possible.|
+#### Happy to contribute this project together :heart:
+#### From VietNam ![Vietnam](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/vn.png "Vietnam") (with Paracel & Spratly Islands) contributor
+Contact me for [instantly support](mailto:dangtrongthanh1998@gmail.com)
 
 
 A Flutter plugin to use telephony features such as
@@ -20,7 +25,6 @@ This plugin tries to replicate some of the functionality provided by Android's [
 Check the [Features section](#Features) to see the list of implemented and missing features.
 
 ## Get Started
-### :bulb: View the **[entire documentation here](https://telephony.shounakmulay.dev/)**.
 
 ## Usage
 To use this plugin add `telephony` as a [dependency in your pubspec.yaml file](https://flutter.dev/docs/development/packages-and-plugins/using-packages).
@@ -294,6 +298,8 @@ class _MyAppState extends State<MyApp> {
 
 ```
 
+
+### :bulb: View the **[entire documentation here](https://telephony.shounakmulay.dev/)**.
 
 ## Features
 

@@ -49,6 +49,7 @@ object Constants {
   const val ADDRESS = "address"
   const val LISTEN_STATUS = "listen_status"
   const val SERVICE_CENTER_ADDRESS = "service_center"
+  const val SUBSCRIPTION_ID = "sub_id";
 
   const val TIMESTAMP = "timestamp"
   const val ORIGINATING_ADDRESS = "originating_address"

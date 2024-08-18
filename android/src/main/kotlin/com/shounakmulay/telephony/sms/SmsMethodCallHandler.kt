@@ -199,9 +199,9 @@ class SmsMethodCallHandler(
         addAction(Constants.ACTION_SMS_DELIVERED)
       }
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        registerReceiver(this, intentFilter, RECEIVER_EXPORTED)
+        context.applicationContext.registerReceiver(this, intentFilter, RECEIVER_EXPORTED)
       }else {
-        registerReceiver(this, intentFilter)
+        context.applicationContext.registerReceiver(this, intentFilter)
       }
     }
     when (smsAction) {

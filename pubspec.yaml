@@ -1,7 +1,7 @@
 name: another_telephony
 description: A Flutter plugin fork from telephony to use telephony features such as fetch network
   info, start phone calls, send and receive SMS, and fixed for listen for incoming SMS.
-version: 0.2.6
+version: 0.2.7
 homepage: https://telephony.shounakmulay.dev
 repository: https://github.com/thanhdang198/Telephony
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -197,7 +198,11 @@ class SmsMethodCallHandler(
         addAction(Constants.ACTION_SMS_SENT)
         addAction(Constants.ACTION_SMS_DELIVERED)
       }
-      context.applicationContext.registerReceiver(this, intentFilter)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.applicationContext.registerReceiver(this, intentFilter, RECEIVER_EXPORTED)
+      }else {
+        context.applicationContext.registerReceiver(this, intentFilter)
+      }
     }
     when (smsAction) {
       SmsAction.SEND_SMS -> smsController.sendSms(address, messageBody, listenStatus, subId)

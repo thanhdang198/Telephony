@@ -20,7 +20,7 @@ abstract class Filter<T, K> {
 class SmsFilter implements Filter<SmsFilterStatement, SmsColumn> {
   final String _filter;
   final List<String> _filterArgs;
-
+ print('');
   SmsFilter._(this._filter, this._filterArgs);
 
   static SmsFilterStatement where(SmsColumn column) =>

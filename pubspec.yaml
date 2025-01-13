@@ -8,7 +8,7 @@ repository: https://github.com/thanhdang198/Telephony
 issue_tracker: https://github.com/thanhdang198/Telephony/issues
 
 environment:
-  sdk: '>=2.15.1 <4.0.0'
+  sdk: ^3.5.4
   flutter: ">=1.10.0"
 
 dependencies:
@@ -19,9 +19,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.6
-  collection: ^1.17.2
-  mockito: ^5.4.2
+  build_runner: ^2.4.13
+  collection: 1.18.0
+  mockito: ^5.4.3
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

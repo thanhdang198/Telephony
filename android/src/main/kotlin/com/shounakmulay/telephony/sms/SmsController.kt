@@ -287,4 +287,34 @@ class SmsController(private val context: Context) {
             telephonyManager
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
+    fun getSubscriptionList(): List<HashMap<String, Any?>> {
+        val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as? SubscriptionManager
+            ?: return emptyList()
+
+        val subscriptions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            subscriptionManager.activeSubscriptionInfoList
+        } else {
+            @Suppress("DEPRECATION")
+            subscriptionManager.activeSubscriptionInfoList
+        }
+
+        return subscriptions?.map { subscriptionInfo ->
+            hashMapOf<String, Any?>(
+                "subscriptionId" to subscriptionInfo.subscriptionId,
+                "simSlotIndex" to subscriptionInfo.simSlotIndex,
+                "carrierName" to subscriptionInfo.carrierName?.toString(),
+                "displayName" to subscriptionInfo.displayName?.toString(),
+                "countryIso" to subscriptionInfo.countryIso,
+                "phoneNumber" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    subscriptionInfo.number
+                } else {
+                    @Suppress("DEPRECATION")
+                    subscriptionInfo.number
+                }
+            )
+        } ?: emptyList()
+    }
 }

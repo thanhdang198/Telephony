@@ -558,6 +558,25 @@ class Telephony {
     final Map<String, dynamic> args = {"phoneNumber": phoneNumber};
     await _foregroundChannel.invokeMethod(DIAL_PHONE_NUMBER, args);
   }
+
+  ///
+  /// Get the list of active subscriptions (SIM cards) on dual SIM devices.
+  ///
+  /// ### Requires READ_PHONE_STATE permission.
+  /// ### Requires Android API 22 (Lollipop MR1) or higher.
+  ///
+  /// Returns:
+  ///
+  /// [Future<List<SubscriptionInfo>>] - List of active subscriptions
+  ///
+  Future<List<SubscriptionInfo>> getSubscriptionList() async {
+    assert(_platform.isAndroid == true, "Can only be called on Android.");
+    final List<dynamic>? subscriptions =
+        await _foregroundChannel.invokeMethod<List<dynamic>>(GET_SUBSCRIPTION_LIST);
+    return (subscriptions ?? [])
+        .map((sub) => SubscriptionInfo.fromMap(Map<String, dynamic>.from(sub)))
+        .toList(growable: false);
+  }
 }
 
 ///
@@ -701,5 +720,50 @@ class SmsConversation {
     return this.threadId == other.threadId &&
         this.snippet == other.snippet &&
         this.messageCount == other.messageCount;
+  }
+}
+
+///
+/// Represents a SIM subscription (SIM card) on the device.
+/// Used for dual SIM devices to identify and select which SIM to use for SMS operations.
+class SubscriptionInfo {
+  /// The unique subscription ID for this SIM card
+  int? subscriptionId;
+
+  /// The SIM slot index (0 for first slot, 1 for second slot, etc.)
+  int? simSlotIndex;
+
+  /// The carrier/operator name (e.g., "Verizon", "AT&T")
+  String? carrierName;
+
+  /// The display name set by user for this SIM
+  String? displayName;
+
+  /// The ISO country code for the subscription (e.g., "us", "gb")
+  String? countryIso;
+
+  /// The phone number associated with this subscription (may be null or empty)
+  String? phoneNumber;
+
+  /// ## Do not call this method. This method is visible only for testing.
+  @visibleForTesting
+  SubscriptionInfo.fromMap(Map<String, dynamic> map) {
+    subscriptionId = map['subscriptionId'] as int?;
+    simSlotIndex = map['simSlotIndex'] as int?;
+    carrierName = map['carrierName'] as String?;
+    displayName = map['displayName'] as String?;
+    countryIso = map['countryIso'] as String?;
+    phoneNumber = map['phoneNumber'] as String?;
+  }
+
+  /// ## Do not call this method. This method is visible only for testing.
+  @visibleForTesting
+  bool equals(SubscriptionInfo other) {
+    return this.subscriptionId == other.subscriptionId &&
+        this.simSlotIndex == other.simSlotIndex &&
+        this.carrierName == other.carrierName &&
+        this.displayName == other.displayName &&
+        this.countryIso == other.countryIso &&
+        this.phoneNumber == other.phoneNumber;
   }
 }

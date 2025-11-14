@@ -26,6 +26,7 @@ const GET_SIM_STATE = "getSimState";
 const IS_NETWORK_ROAMING = "isNetworkRoaming";
 const GET_SIGNAL_STRENGTH = "getSignalStrength";
 const GET_SERVICE_STATE = "getServiceState";
+const GET_SUBSCRIPTION_LIST = "getSubscriptionList";
 const REQUEST_SMS_PERMISSION = "requestSmsPermissions";
 const REQUEST_PHONE_PERMISSION = "requestPhonePermissions";
 const REQUEST_PHONE_AND_SMS_PERMISSION = "requestPhoneAndSmsPermissions";

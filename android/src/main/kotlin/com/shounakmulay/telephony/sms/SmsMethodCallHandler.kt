@@ -265,6 +265,13 @@ class SmsMethodCallHandler(
             result.error("INCORRECT_SDK_VERSION", "getServiceState() can only be called on Android O and above", null)
           }
         }
+        SmsAction.GET_SUBSCRIPTION_LIST -> {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            getSubscriptionList()
+          } else {
+            result.error("INCORRECT_SDK_VERSION", "getSubscriptionList() can only be called on Android Lollipop MR1 (API 22) and above", null)
+          }
+        }
         else -> throw IllegalArgumentException()
       }
       result.success(value)
@@ -315,6 +322,7 @@ class SmsMethodCallHandler(
         return checkOrRequestPermission(permissions, requestCode)
       }
       SmsAction.GET_DATA_NETWORK_TYPE,
+      SmsAction.GET_SUBSCRIPTION_LIST,
       SmsAction.OPEN_DIALER,
       SmsAction.DIAL_PHONE_NUMBER,
       SmsAction.REQUEST_PHONE_PERMISSIONS -> {

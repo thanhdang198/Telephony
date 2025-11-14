@@ -240,13 +240,15 @@ main() {
         when(methodChannel.invokeMethod(SEND_SMS, {
           "address": address,
           "message_body": body,
-          "listen_status": false
+          "listen_status": false,
+          "sub_id": -1
         })).thenAnswer((realInvocation) => Future<void>.value());
         telephony.sendSms(to: address, message: body);
         verify(methodChannel.invokeMethod(SEND_SMS, {
           "address": address,
           "message_body": body,
-          "listen_status": false
+          "listen_status": false,
+          "sub_id": -1
         })).called(1);
       });
 
@@ -254,7 +256,8 @@ main() {
         final args = {
           "address": "123456",
           "message_body": "some long message",
-          "listen_status": false
+          "listen_status": false,
+          "sub_id": -1
         };
         when(methodChannel.invokeMethod(SEND_MULTIPART_SMS, args))
             .thenAnswer((realInvocation) => Future<void>.value());

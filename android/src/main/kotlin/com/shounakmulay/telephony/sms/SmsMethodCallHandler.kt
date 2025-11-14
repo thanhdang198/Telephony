@@ -370,7 +370,13 @@ class SmsMethodCallHandler(
     permissionsController.isRequestingPermission = false
 
     val deniedPermissions = mutableListOf<String>()
-    if (requestCode != this.requestCode && !this::action.isInitialized) {
+    // Only process permission results for this plugin's request codes
+    if (requestCode != this.requestCode) {
+      return false
+    }
+
+    // Ensure action is initialized before processing
+    if (!this::action.isInitialized) {
       return false
     }
 

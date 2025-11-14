@@ -140,21 +140,42 @@ class SmsController(private val context: Context) {
     }
 
     private fun getSmsManager(subId: Int): SmsManager {
-        var subscriptionId = subId
-        if(subId == -1){
-            subscriptionId = SmsManager.getDefaultSmsSubscriptionId()
+        // Determine the subscription ID to use
+        val subscriptionId = if (subId == -1) {
+            SmsManager.getDefaultSmsSubscriptionId()
+        } else {
+            subId
         }
 
-        val smsManager = getSystemService(context, SmsManager::class.java)
-            ?: throw RuntimeException("Flutter Telephony: Error getting SmsManager")
+        // Get the base SmsManager - method depends on API level
+        val baseSmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // API 31+ (Android 12+): Use getSystemService
+            getSystemService(context, SmsManager::class.java)
+                ?: throw RuntimeException("Flutter Telephony: Error getting SmsManager")
+        } else {
+            // Older versions: Use getDefault()
+            @Suppress("DEPRECATION")
+            SmsManager.getDefault()
+        }
+
+        // If we have a valid subscription ID, create a subscription-specific manager
         if (subscriptionId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                smsManager.createForSubscriptionId(subscriptionId)
-            } else {
-                SmsManager.getSmsManagerForSubscriptionId(subscriptionId)
+            return try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    baseSmsManager.createForSubscriptionId(subscriptionId)
+                } else {
+                    @Suppress("DEPRECATION")
+                    SmsManager.getSmsManagerForSubscriptionId(subscriptionId)
+                }
+            } catch (e: Exception) {
+                // If creating subscription-specific manager fails, fall back to base manager
+                android.util.Log.w("Telephony", "Failed to create SmsManager for subscription $subscriptionId, using default: ${e.message}")
+                baseSmsManager
             }
         }
-        return smsManager
+
+        // Fall back to base manager if subscription ID is invalid
+        return baseSmsManager
     }
 
     // PHONE

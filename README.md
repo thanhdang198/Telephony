@@ -91,6 +91,65 @@ If the body of the message is longer than the standard SMS length limit of `160 
 telephony.sendSmsByDefaultApp(to: "1234567890", message: "May the force be with you!");
 ```
 
+### [Dual SIM Support - Send SMS from Specific SIM](https://shounakmulay.gitbook.io/telephony/dual-sim-support)
+:exclamation: Requires `READ_PHONE_STATE` permission.
+Add the following permission in your `AndroidManifest.xml`
+```xml
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+```
+
+For dual SIM devices, you can retrieve the list of available SIM cards and send SMS from a specific SIM.
+
+#### Get list of subscriptions (SIM cards):
+```dart
+List<SubscriptionInfo> subscriptions = await telephony.getSubscriptionList();
+
+for (var sub in subscriptions) {
+  print('SIM Slot: ${sub.simSlotIndex}');
+  print('Carrier: ${sub.carrierName}');
+  print('Display Name: ${sub.displayName}');
+  print('Phone Number: ${sub.phoneNumber}');
+  print('Subscription ID: ${sub.subscriptionId}');
+  print('---');
+}
+```
+
+#### Send SMS from specific SIM:
+Use the `subscriptionId` from the `SubscriptionInfo` object to send SMS from a specific SIM card:
+
+```dart
+// Get subscriptions
+List<SubscriptionInfo> subscriptions = await telephony.getSubscriptionList();
+
+// Send from first SIM (if available)
+if (subscriptions.isNotEmpty) {
+  telephony.sendSms(
+    to: "1234567890",
+    message: "Message from SIM 1",
+    subscriptionId: subscriptions[0].subscriptionId!
+  );
+}
+
+// Send from second SIM (if available)
+if (subscriptions.length > 1) {
+  telephony.sendSms(
+    to: "1234567890",
+    message: "Message from SIM 2",
+    subscriptionId: subscriptions[1].subscriptionId!
+  );
+}
+```
+
+#### SubscriptionInfo Properties:
+- `subscriptionId` - Unique ID for this subscription (use this when sending SMS)
+- `simSlotIndex` - Physical slot index (0 for first slot, 1 for second slot)
+- `carrierName` - Carrier/operator name (e.g., "Verizon", "T-Mobile")
+- `displayName` - User-assigned display name for the SIM
+- `countryIso` - ISO country code (e.g., "us", "gb")
+- `phoneNumber` - Phone number associated with the SIM (may be null)
+
+:bulb: **Note**: On single SIM devices, `getSubscriptionList()` will return a list with one item.
+
 ### [Query SMS](https://shounakmulay.gitbook.io/telephony/query-sms)
 :exclamation: Requires `READ_SMS` permission.
 Add the following permission in your `AndroidManifest.xml`
@@ -304,6 +363,10 @@ class _MyAppState extends State<MyApp> {
 ## Features
 
  - [x] [Send SMS](#send-sms)
+ - [x] [Dual SIM Support](#dual-sim-support---send-sms-from-specific-sim)
+	 - [x] Get list of available SIM cards
+	 - [x] Send SMS from specific SIM
+	 - [x] Query SIM information (carrier, phone number, etc.)
  - [x] [Query SMS](#query-sms)
 	 - [x] Inbox
 	 - [x] Sent

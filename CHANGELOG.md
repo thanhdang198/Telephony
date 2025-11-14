@@ -1,3 +1,33 @@
+## 0.4.2
+### Bug Fixes
+* **CRITICAL**: Fix IllegalStateException 'Reply already submitted' crash in permission handling [#14](https://github.com/thanhdang198/Telephony/issues/14)
+  - Fixed permission callback logic that caused crashes when multiple plugins request permissions
+  - Separated request code validation to prevent cross-plugin interference
+* **CRITICAL**: Fix PlatformException 'Error getting SmsManager' on Android 11 and below [#12](https://github.com/thanhdang198/Telephony/issues/12)
+  - Added API level check for SmsManager initialization
+  - Use `SmsManager.getDefault()` for Android < 12, `getSystemService()` for Android 12+
+  - Added graceful fallback when subscription-specific manager creation fails
+
+### New Features
+* **Dual SIM Support**: Added subscription list support for dual SIM devices [#16](https://github.com/thanhdang198/Telephony/issues/16)
+  - New `getSubscriptionList()` method to retrieve all active SIM cards
+  - New `SubscriptionInfo` class with detailed SIM information:
+    - subscriptionId (for sending SMS from specific SIM)
+    - simSlotIndex (physical slot number)
+    - carrierName (operator name)
+    - displayName (user-assigned name)
+    - countryIso (country code)
+    - phoneNumber (if available)
+  - Enhanced `sendSms()` method to accept `subscriptionId` parameter
+  - Requires `READ_PHONE_STATE` permission
+  - Supports Android API 22 (Lollipop MR1) and above
+
+### Improvements
+* Removed completed TODO comments and improved code documentation
+* Enhanced example app with dual SIM demonstration UI
+* Added comprehensive unit tests for dual SIM functionality
+* Updated README with dual SIM usage examples and documentation
+
 ## 0.4.1
 * Fix on namespace erorr when building flutter 3.29 [#10](https://github.com/thanhdang198/Telephony/pull/10), thanks [IamMuuo](https://github.com/IamMuuo)
 * Remove iOS configuration [#7](https://github.com/thanhdang198/Telephony/pull/7), thánk [ali2236](https://github.com/ali2236)

@@ -172,6 +172,65 @@ main() {
         verify(methodChannel.invokeMethod(IS_SMS_CAPABLE)).called(1);
         expect(result, true);
       });
+
+      test("subscription list for dual SIM", () async {
+        final mockSubscriptions = [
+          {
+            'subscriptionId': 1,
+            'simSlotIndex': 0,
+            'carrierName': 'Carrier 1',
+            'displayName': 'SIM 1',
+            'countryIso': 'us',
+            'phoneNumber': '+1234567890'
+          },
+          {
+            'subscriptionId': 2,
+            'simSlotIndex': 1,
+            'carrierName': 'Carrier 2',
+            'displayName': 'SIM 2',
+            'countryIso': 'us',
+            'phoneNumber': '+0987654321'
+          }
+        ];
+
+        when(methodChannel.invokeMethod<List<dynamic>>(GET_SUBSCRIPTION_LIST))
+            .thenAnswer((_) => Future<List<dynamic>>.value(mockSubscriptions));
+
+        final subscriptions = await telephony.getSubscriptionList();
+
+        verify(methodChannel.invokeMethod(GET_SUBSCRIPTION_LIST)).called(1);
+        expect(subscriptions.length, 2);
+        expect(subscriptions[0].subscriptionId, 1);
+        expect(subscriptions[0].simSlotIndex, 0);
+        expect(subscriptions[0].carrierName, 'Carrier 1');
+        expect(subscriptions[0].displayName, 'SIM 1');
+        expect(subscriptions[0].phoneNumber, '+1234567890');
+        expect(subscriptions[1].subscriptionId, 2);
+        expect(subscriptions[1].simSlotIndex, 1);
+        expect(subscriptions[1].carrierName, 'Carrier 2');
+      });
+
+      test("subscription list returns empty list when no SIMs", () async {
+        when(methodChannel.invokeMethod<List<dynamic>>(GET_SUBSCRIPTION_LIST))
+            .thenAnswer((_) => Future<List<dynamic>>.value([]));
+
+        final subscriptions = await telephony.getSubscriptionList();
+
+        verify(methodChannel.invokeMethod(GET_SUBSCRIPTION_LIST)).called(1);
+        expect(subscriptions.length, 0);
+        expect(subscriptions, isEmpty);
+      });
+
+      test("subscription list handles null response", () async {
+        when(methodChannel.invokeMethod<List<dynamic>>(GET_SUBSCRIPTION_LIST))
+            .thenAnswer((_) => Future<List<dynamic>?>.value(null));
+
+        final subscriptions = await telephony.getSubscriptionList();
+
+        verify(methodChannel.invokeMethod(GET_SUBSCRIPTION_LIST)).called(1);
+        expect(subscriptions.length, 0);
+        expect(subscriptions, isEmpty);
+      });
     });
 
     group("should send", () {

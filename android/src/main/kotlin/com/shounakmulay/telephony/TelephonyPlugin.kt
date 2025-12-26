@@ -2,7 +2,6 @@ package com.shounakmulay.telephony
 
 import android.content.Context
 import androidx.annotation.NonNull
-import com.shounakmulay.telephony.sms.IncomingSmsHandler
 import com.shounakmulay.telephony.utils.Constants.CHANNEL_SMS
 import com.shounakmulay.telephony.sms.IncomingSmsReceiver
 import com.shounakmulay.telephony.sms.SmsController

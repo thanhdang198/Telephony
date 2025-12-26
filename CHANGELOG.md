@@ -5,6 +5,8 @@
 * **Fix Issue [#17](https://github.com/thanhdang198/Telephony/issues/17)**: Add subscriptionId to incoming SMS messages for dual SIM support
 * Add subscriptionId field to incoming SMS message map (Android side)
 * Add SUBSCRIPTION_ID to INCOMING_SMS_COLUMNS for proper parsing (Dart side)
+* **Fix Issue [#18](https://github.com/thanhdang198/Telephony/issues/18)**: Remove unused import causing "Unresolved reference" build error
+* Remove unused IncomingSmsHandler import from TelephonyPlugin.kt to prevent compilation issues
 
 ## 0.4.1
 * Fix on namespace erorr when building flutter 3.29 [#10](https://github.com/thanhdang198/Telephony/pull/10), thanks [IamMuuo](https://github.com/IamMuuo)

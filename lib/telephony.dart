@@ -680,16 +680,16 @@ class SmsConversation {
     final conversation =
         Map.castFrom<dynamic, dynamic, String, dynamic>(rawConversation);
     for (var column in DEFAULT_CONVERSATION_COLUMNS) {
-      final String? value = conversation[column._columnName];
+      final value = conversation[column._columnName];
       switch (column._columnName) {
         case _ConversationProjections.SNIPPET:
           this.snippet = value;
           break;
         case _ConversationProjections.THREAD_ID:
-          this.threadId = int.tryParse(value!);
+          this.threadId = int.tryParse(value);
           break;
         case _ConversationProjections.MSG_COUNT:
-          this.messageCount = int.tryParse(value!);
+          this.messageCount = int.tryParse(value);
           break;
       }
     }

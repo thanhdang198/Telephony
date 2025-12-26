@@ -53,9 +53,9 @@ class Telephony {
   final MethodChannel _foregroundChannel;
   final Platform _platform;
 
-  late MessageHandler _onNewMessage;
-  late MessageHandler _onBackgroundMessages;
-  late SmsSendStatusListener _statusListener;
+  MessageHandler? _onNewMessage;
+  MessageHandler? _onBackgroundMessages;
+  SmsSendStatusListener? _statusListener;
 
   ///
   /// Gets a singleton instance of the [Telephony] class.
@@ -145,11 +145,11 @@ class Telephony {
     switch (call.method) {
       case ON_MESSAGE:
         final message = call.arguments["message"];
-        return _onNewMessage(SmsMessage.fromMap(message, INCOMING_SMS_COLUMNS));
+        return _onNewMessage?.call(SmsMessage.fromMap(message, INCOMING_SMS_COLUMNS));
       case SMS_SENT:
-        return _statusListener(SendStatus.SENT);
+        return _statusListener?.call(SendStatus.SENT);
       case SMS_DELIVERED:
-        return _statusListener(SendStatus.DELIVERED);
+        return _statusListener?.call(SendStatus.DELIVERED);
     }
   }
 

@@ -329,3 +329,41 @@ class _MyAppState extends State<MyApp> {
  - [x] Start Phone Call
  - [ ] Schedule a SMS
  - [ ] SMS Retriever API
+
+## Troubleshooting
+
+### Build Error: "Unresolved reference 'IncomingSmsHandler'"
+
+If you encounter a build error mentioning `Unresolved reference 'IncomingSmsHandler'` or similar compilation errors:
+
+1. **Clean and rebuild your project:**
+   ```bash
+   flutter clean
+   flutter pub get
+   cd android && ./gradlew clean
+   cd .. && flutter build apk
+   ```
+
+2. **Invalidate caches in Android Studio:**
+   - File → Invalidate Caches / Restart → Invalidate and Restart
+
+3. **Check your Flutter and Gradle versions:**
+   - Ensure you're using Flutter 3.0.0 or higher
+   - The plugin requires `minSdkVersion 23` or higher
+
+4. **Verify package version:**
+   - Make sure you're using the latest version from pub.dev
+   - The CHANGELOG documents version 0.4.2, which includes all recent fixes
+
+### Dual SIM Support
+
+For dual SIM devices, the `subscriptionId` field is now properly populated in incoming SMS messages (fixed in v0.4.2). You can use this to identify which SIM received the message:
+
+```dart
+telephony.listenIncomingSms(
+  onNewMessage: (SmsMessage message) {
+    print('Received from SIM with subscriptionId: ${message.subscriptionId}');
+    // Compare with telephony.getSubscriptionList() to identify the SIM
+  }
+);
+```

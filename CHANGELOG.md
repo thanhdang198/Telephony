@@ -1,3 +1,11 @@
+## 0.4.2
+* Fix null safety issues in handler method - prevents LateInitializationError crashes
+* Fix null assertion bug in SmsConversation.fromMap
+* Fix missing sub_id parameter in sendSms tests
+* **Fix Issue [#17](https://github.com/thanhdang198/Telephony/issues/17)**: Add subscriptionId to incoming SMS messages for dual SIM support
+* Add subscriptionId field to incoming SMS message map (Android side)
+* Add SUBSCRIPTION_ID to INCOMING_SMS_COLUMNS for proper parsing (Dart side)
+
 ## 0.4.1
 * Fix on namespace erorr when building flutter 3.29 [#10](https://github.com/thanhdang198/Telephony/pull/10), thanks [IamMuuo](https://github.com/IamMuuo)
 * Remove iOS configuration [#7](https://github.com/thanhdang198/Telephony/pull/7), thánk [ali2236](https://github.com/ali2236)
